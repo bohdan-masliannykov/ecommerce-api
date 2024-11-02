@@ -15,19 +15,19 @@ import { ProductsService } from './providers/products.service';
 export class ProductsController {
   constructor(readonly productsService: ProductsService) {}
 
-  //TODO handle sorting and quering
-  @Get()
-  findaAll() {
+  @Get(':id?')
+  findProducts() {
+    //todo create dto for queryparams
     return this.productsService.findAll();
   }
 
   @Post()
-  createOne(@Body() createProductDto: CreateProductDto) {
+  createProduct(@Body() createProductDto: CreateProductDto) {
     return this.productsService.createOne(createProductDto);
   }
 
   @Put(':id')
-  updateOne(
+  updateProduct(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateProductDto: UpdateProductDto,
   ) {
@@ -35,7 +35,7 @@ export class ProductsController {
   }
 
   @Delete(':id')
-  deleteOne(@Param('id', ParseIntPipe) id: number) {
+  deleteProduct(@Param('id', ParseIntPipe) id: number) {
     return this.productsService.deleteOne(id);
   }
 }
