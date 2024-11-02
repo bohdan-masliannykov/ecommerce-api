@@ -8,19 +8,22 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { CreateProductDto } from './dtos/create-product.dto';
-import { UpdateProductDto } from './dtos/update-product.dto';
+import { CreateProductDto, UpdateProductDto } from './dtos';
+import { ProductsService } from './providers/products.service';
 
 @Controller('products')
 export class ProductsController {
+  constructor(readonly productsService: ProductsService) {}
+
+  //TODO handle sorting and quering
   @Get()
   findaAll() {
-    return [];
+    return this.productsService.findAll();
   }
 
   @Post()
   createOne(@Body() createProductDto: CreateProductDto) {
-    return { product: createProductDto, action: 'Product has been created!' };
+    return this.productsService.createOne(createProductDto);
   }
 
   @Put(':id')
@@ -28,11 +31,11 @@ export class ProductsController {
     @Param('id', ParseIntPipe) id: number,
     @Body() updateProductDto: UpdateProductDto,
   ) {
-    return { id, ...updateProductDto, action: 'Product has been update!' };
+    return this.productsService.updateOne(id, updateProductDto);
   }
 
   @Delete(':id')
   deleteOne(@Param('id', ParseIntPipe) id: number) {
-    return { id, action: 'Product has been deleted!' };
+    return this.productsService.deleteOne(id);
   }
 }
