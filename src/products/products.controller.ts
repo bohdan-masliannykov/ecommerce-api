@@ -4,39 +4,35 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
 } from '@nestjs/common';
+import { CreateProductDto } from './dtos/create-product.dto';
+import { UpdateProductDto } from './dtos/update-product.dto';
 
 @Controller('products')
 export class ProductsController {
-  // 3. limit/sort
-
-  // 7. product categories get
-  // 8. get product per category
-
   @Get()
-  findAll() {
-    return [{ id: 1 }];
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return [{ id }];
+  findaAll() {
+    return [];
   }
 
   @Post()
-  createOne(@Body() body: any) {
-    return body;
+  createOne(@Body() createProductDto: CreateProductDto) {
+    return { product: createProductDto, action: 'Product has been created!' };
   }
 
-  @Put()
-  updateOne(@Body() body: any) {
-    return body;
+  @Put(':id')
+  updateOne(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateProductDto: UpdateProductDto,
+  ) {
+    return { id, ...updateProductDto, action: 'Product has been update!' };
   }
 
   @Delete(':id')
-  deleteOne(@Param('id') id: string) {
-    return { id: 'id-to-delte: ' + id };
+  deleteOne(@Param('id', ParseIntPipe) id: number) {
+    return { id, action: 'Product has been deleted!' };
   }
 }
